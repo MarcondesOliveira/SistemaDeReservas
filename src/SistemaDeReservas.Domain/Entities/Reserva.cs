@@ -2,10 +2,10 @@
 
 namespace SistemaDeReservas.Domain.Entities
 {
-    public class Reserva
+    public class Reserva : Entity
     {
-        public int Id { get; set; }
         public DateTime Data { get; set; }
         public Status Status { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }

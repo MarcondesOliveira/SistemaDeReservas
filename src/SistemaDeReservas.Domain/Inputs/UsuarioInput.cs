@@ -1,11 +1,9 @@
-﻿namespace SistemaDeReservas.Domain.Entities
+﻿namespace SistemaDeReservas.Domain.Inputs
 {
-    public class Usuario : Entity
+    public class UsuarioInput
     {
         public required string Nome { get; set; }
         public required string Email { get; set; }
         public required string Senha { get; set; }
-        public virtual ICollection<Reserva> Reservas { get; set; }
-
     }
 }

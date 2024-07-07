@@ -2,7 +2,7 @@
 
 namespace SistemaDeReservas.Domain.Entities
 {
-    public class Notificacao
+    public class Notificacao : Entity
     {
         public string Mensagem { get; set; }
         public Tipo Tipo { get; set; }
