@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace SistemaDeReservas.Domain.Repositories
 {
-    public interface IUsuarioRepository : IRepository<Usuario>
+    public interface ITokenService
     {
-        Usuario ObterPorNomeUsuarioESenha(string email, string senha);
+        string GerarToken(Usuario usuario);
     }
 }

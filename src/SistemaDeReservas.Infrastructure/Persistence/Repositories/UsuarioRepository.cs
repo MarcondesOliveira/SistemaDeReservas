@@ -13,5 +13,11 @@ namespace SistemaDeReservas.Infrastructure.Persistence.Repositories
         public UsuarioRepository(ApplicationDbContext context) : base(context)
         {
         }
+
+        public Usuario ObterPorNomeUsuarioESenha(string email, string senha)
+        {
+            return _context.Usuario.FirstOrDefault(usuario =>
+                usuario.Email == email && usuario.Senha == senha);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SistemaDeReservas.Application.Services;
 using SistemaDeReservas.Domain.Entities;
 using SistemaDeReservas.Domain.Inputs;
@@ -17,6 +18,8 @@ namespace SistemaDeReservas.API.Controllers
             _usuarioRepository = usuarioRepository;
         }
 
+        [Authorize]
+        [Authorize(Roles = Permissoes.Administrador)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Usuario>>> ObterUsuarios()
         {
