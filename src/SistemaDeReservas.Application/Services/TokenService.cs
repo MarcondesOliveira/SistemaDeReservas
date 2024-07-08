@@ -31,6 +31,7 @@ namespace SistemaDeReservas.Application.Services
                 {
                     new Claim(ClaimTypes.Name, usuario.Nome),
                     new Claim(ClaimTypes.Email, usuario.Email),
+                    new Claim(ClaimTypes.Role, usuario.Permissao.ToString()),
                     new Claim("Id", usuario.Id.ToString())
                 }),
 

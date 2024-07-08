@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SistemaDeReservas.Application.Services;
 using SistemaDeReservas.Domain.Entities;
+using SistemaDeReservas.Domain.Enum;
 using SistemaDeReservas.Domain.Inputs;
 using SistemaDeReservas.Domain.Repositories;
 
