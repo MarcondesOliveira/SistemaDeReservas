@@ -28,7 +28,8 @@ namespace SistemaDeReservas.Infrastructure.Persistence.Repositories
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            _dbSet.Remove(GetById(id));
+            _context.SaveChanges();
         }
 
         public async Task<IEnumerable<T>> GetAll()
@@ -38,12 +39,13 @@ namespace SistemaDeReservas.Infrastructure.Persistence.Repositories
 
         public T GetById(int id)
         {
-            throw new NotImplementedException();
+            return _dbSet.SingleOrDefault(x => x.Id == id);
         }
 
         public void Update(T entity)
         {
-            throw new NotImplementedException();
+            _dbSet.Update(entity);
+            _context.SaveChanges();
         }
     }
 }

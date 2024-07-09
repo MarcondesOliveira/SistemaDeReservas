@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SistemaDeReservas.Application.DTOs;
 using SistemaDeReservas.Application.Services;
 using SistemaDeReservas.Domain.Entities;
 using SistemaDeReservas.Domain.Enum;
@@ -21,7 +22,7 @@ namespace SistemaDeReservas.API.Controllers
 
         [Authorize]
         [Authorize(Roles = Permissoes.Administrador)]
-        [HttpGet]
+        [HttpGet("obter-usuarios")]
         public async Task<ActionResult<IEnumerable<Usuario>>> ObterUsuarios()
         {
             try
@@ -35,19 +36,27 @@ namespace SistemaDeReservas.API.Controllers
                 throw ex;
             }
         }
-
-        [HttpPost]
-        public IActionResult CriarUsuario([FromBody] UsuarioInput input) 
+        [Authorize]
+        [Authorize(Roles = Permissoes.Administrador)]
+        [HttpGet("obter-usuario-por-id")]
+        public IActionResult ObterUsuarioPorId(int id)
         {
             try
             {
-                var usuario = new Usuario()
-                {
-                    Nome = input.Nome,
-                    Email = input.Email,
-                    Senha = input.Senha
-                };
+                var usuario = _usuarioRepository.GetById(id);
+                return Ok(usuario);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro ao obter usuário por id");
+            }
+        }
 
+        [HttpPost("criar-usuario")]
+        public IActionResult CriarUsuario([FromBody] CreateUsuarioInput usuario) 
+        {
+            try
+            {
                 _usuarioRepository.Create(usuario);
 
                 return Ok();
@@ -55,6 +64,34 @@ namespace SistemaDeReservas.API.Controllers
             catch (Exception e)
             {
                 return BadRequest(e);
+            }
+        }
+                
+        [HttpPut("alterar-usuario")]
+        public IActionResult AlterarUsuario(UpdateUsuarioInput usuario)
+        {
+            try
+            {
+                _usuarioRepository.Update(usuario);
+                return Ok("Usuario alterado com sucesso");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro ao alterar usuário");
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeletarUsuario(int id)
+        {
+            try
+            {
+                _usuarioRepository.Delete(id);
+                return Ok($"Usuário deletado com sucesso | Id: {id}");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro ao deletar usuário");
             }
         }
     }
