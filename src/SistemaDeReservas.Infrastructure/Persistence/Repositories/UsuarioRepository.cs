@@ -1,4 +1,5 @@
-﻿using SistemaDeReservas.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using SistemaDeReservas.Domain.Entities;
 using SistemaDeReservas.Domain.Inputs;
 using SistemaDeReservas.Domain.Repositories;
 using System;
@@ -17,8 +18,23 @@ namespace SistemaDeReservas.Infrastructure.Persistence.Repositories
 
         public Usuario ObterPorNomeUsuarioESenha(string email, string senha)
         {
-            return _context.Usuario.FirstOrDefault(usuario =>
-                usuario.Email == email && usuario.Senha == senha);
+            var usuario = _context.Usuario
+                .Include(c => c.Reservas)
+                .FirstOrDefault(usuario =>
+                usuario.Email == email && usuario.Senha == senha)
+                    ?? throw new Exception("Esse usuário não existe");
+
+            usuario.Reservas = usuario.Reservas
+                .Where(c => c.Data >= DateTime.Now)
+                .Select(p =>
+                {
+                    p.Usuario = null;
+
+                    return p;
+                })
+                .ToList();
+
+            return usuario;
         }
 
         public void Create(CreateUsuarioInput usuario)

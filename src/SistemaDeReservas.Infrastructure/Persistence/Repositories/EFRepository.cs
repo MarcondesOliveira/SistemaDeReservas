@@ -22,6 +22,7 @@ namespace SistemaDeReservas.Infrastructure.Persistence.Repositories
 
         public void Create(T entity)
         {
+            //entity.Data = DateTime.Now;
             _dbSet.Add(entity);
             _context.SaveChanges();
         }

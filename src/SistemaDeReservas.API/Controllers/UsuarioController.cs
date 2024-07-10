@@ -81,6 +81,8 @@ namespace SistemaDeReservas.API.Controllers
             }
         }
 
+        [Authorize]
+        [Authorize(Roles = Permissoes.Administrador)]
         [HttpDelete("{id}")]
         public IActionResult DeletarUsuario(int id)
         {

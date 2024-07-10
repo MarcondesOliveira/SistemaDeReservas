@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    options.JsonSerializerOptions.ReferenceHandler = null; // Remover ReferenceHandler
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve; // Remover ReferenceHandler
 });
 
 // Add services to the container.
@@ -54,7 +54,10 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IReservaRepository, ReservaRepository>();
+
 builder.Services.AddScoped<UsuarioService>();
+builder.Services.AddScoped<ReservaService>();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 

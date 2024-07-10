@@ -62,6 +62,9 @@ namespace SistemaDeReservas.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("datetime");
 
+                    b.Property<TimeSpan>("Hora")
+                        .HasColumnType("time");
+
                     b.Property<int>("Status")
                         .HasMaxLength(100)
                         .HasColumnType("int");
