@@ -24,5 +24,12 @@ namespace SistemaDeReservas.Application.Services
 
             _repository.Create(reserva);
         }
+
+        public void Update(UpdateReservaInput input)
+        {
+            var reserva = new Reserva(input);
+
+            _repository.Update(reserva);
+        }
     }
 }

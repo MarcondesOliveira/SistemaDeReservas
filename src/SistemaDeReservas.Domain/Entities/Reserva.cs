@@ -23,5 +23,14 @@ namespace SistemaDeReservas.Domain.Entities
             Status = Status.Pendente;
             UsuarioId = input.UsuarioId;
         }
+
+        public Reserva(UpdateReservaInput input)
+        {
+            Id = input.Id;
+            Data = input.Data;
+            Hora = TimeSpan.Parse(input.Hora);
+            Status = input.Status;
+            UsuarioId = input.UsuarioId;
+        }
     }
 }

@@ -21,5 +21,11 @@ namespace SistemaDeReservas.Infrastructure.Persistence.Repositories
             _dbSet.Add(new Reserva(reserva));
             _context.SaveChanges();
         }
+
+        public void Update(UpdateReservaInput reserva)
+        {
+            _dbSet.Update(new Reserva(reserva));
+            _context.SaveChanges();
+        }
     }
 }

@@ -6,13 +6,10 @@ using SistemaDeReservas.Application.Services;
 using SistemaDeReservas.Domain.Repositories;
 using SistemaDeReservas.Infrastructure;
 using SistemaDeReservas.Infrastructure.Persistence.Repositories;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
-//var configuration = new ConfigurationBuilder()
-//    .AddJsonFile("appsettings.json")
-//    .Build();
 
 // Add services to the container.
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -67,10 +64,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseLazyLoadingProxies();
 }, ServiceLifetime.Scoped);
 
-//var configuration = new ConfigurationBuilder()
-//    .AddJsonFile("appsettings.json")
-//    .Build();
-
 var key = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("Secret"));
 
 builder.Services.AddAuthentication(x =>
@@ -87,7 +80,8 @@ builder.Services.AddAuthentication(x =>
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(key),
         ValidateIssuer = false,
-        ValidateAudience = false
+        ValidateAudience = false,
+        RoleClaimType = ClaimTypes.Role
     };
 });
 
