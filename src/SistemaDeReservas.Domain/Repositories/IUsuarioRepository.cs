@@ -12,6 +12,8 @@ namespace SistemaDeReservas.Domain.Repositories
     {
         void Create(CreateUsuarioInput usuario);
         void Update(UpdateUsuarioInput usuario);
+        Task<IEnumerable<Usuario>> GetAllUsuarios();
+        Task<IEnumerable<Usuario>> GetByUserId(int userId);
         Usuario ObterPorNomeUsuarioESenha(string email, string senha);
     }
 }

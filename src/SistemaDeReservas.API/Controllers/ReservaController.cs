@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SistemaDeReservas.Application.Helpers;
+using SistemaDeReservas.Domain.Entities;
 using SistemaDeReservas.Domain.Enum;
 using SistemaDeReservas.Domain.Inputs;
 using SistemaDeReservas.Domain.Repositories;
@@ -19,6 +21,79 @@ namespace SistemaDeReservas.API.Controllers
         {
             _repository = repository;
         }
+
+        [HttpGet("obter-reservas")]
+        public async Task<ActionResult<IEnumerable<Reserva>>> ObterReservas()
+        {
+            try
+            {
+                var userId = User.FindFirst("Id")?.Value;
+                var userPermissao = User.FindFirst(ClaimTypes.Role)?.Value;
+
+                if (userId == null || userPermissao == null)
+                {
+                    return Unauthorized();
+                }
+
+                IEnumerable<Reserva> reservas;
+
+                var isAdmin = userPermissao == Permissoes.Administrador;
+
+                if (isAdmin)
+                {
+                    reservas = await _repository.GetAllReservas();
+                }
+                else
+                {
+                    reservas = await _repository.GetByUserId(int.Parse(userId));
+                }
+
+                var reservaDtos = reservas.Select(r => r.ToDto()).ToList();
+
+                return Ok(reservaDtos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro ao obter reservas");
+            }
+        }
+
+        [HttpGet("obter-reserva-por-id")]
+        public IActionResult ObterReservaPorId(int id)
+        {
+            try
+            {
+                var userId = User.FindFirst("Id")?.Value;
+                var userPermissao = User.FindFirst(ClaimTypes.Role)?.Value;
+
+                if (userId == null || userPermissao == null)
+                {
+                    return Unauthorized();
+                }
+
+                var reserva = _repository.GetById(id);
+                if (reserva == null)
+                {
+                    return NotFound("Reserva não encontrada");
+                }
+
+                var isAdmin = userPermissao == Permissoes.Administrador;
+                var isOwnUser = reserva.UsuarioId.ToString() == userId;
+
+                if (!isAdmin && !isOwnUser)
+                {
+                    return Unauthorized();
+                }
+
+                var reservaDto = reserva.ToDto();
+                                
+                return Ok(reservaDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro ao obter reserva por id");
+            }
+        }        
 
         [HttpPost("criar-reserva")]
         public IActionResult CriarReserva([FromBody] CreateReservaInput reserva)
@@ -51,7 +126,7 @@ namespace SistemaDeReservas.API.Controllers
             }
         }
 
-        [HttpPut("alterar-reserva")]
+        [HttpPut("alterar-reserva")] // TODO: ajustar
         public IActionResult AlterarReserva(UpdateReservaInput reserva)
         {
             try
@@ -78,6 +153,44 @@ namespace SistemaDeReservas.API.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, "Erro ao alterar reserva");
+            }
+        }
+
+
+
+        [HttpDelete("{id}")]
+        public IActionResult CancelarReserva(int id)
+        {
+            try
+            {
+                var userId = User.FindFirst("Id")?.Value;
+                var userPermissao = User.FindFirst(ClaimTypes.Role)?.Value;
+
+                if (userId == null || userPermissao == null)
+                {
+                    return Unauthorized();
+                }
+
+                var reserva = _repository.GetById(id);
+                if (reserva == null)
+                {
+                    return NotFound("Reserva não encontrada");
+                }
+
+                var isAdmin = userPermissao == Permissoes.Administrador;
+                var isOwnUser = reserva.UsuarioId.ToString() == userId;
+
+                if (!isAdmin && !isOwnUser)
+                {
+                    return Unauthorized();
+                }
+
+                _repository.Delete(id);
+                return Ok($"Reserva cancelada com sucesso | Id: {id}");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro ao cancelar reserva");
             }
         }
     }

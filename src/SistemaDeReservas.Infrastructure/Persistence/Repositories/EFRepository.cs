@@ -22,7 +22,6 @@ namespace SistemaDeReservas.Infrastructure.Persistence.Repositories
 
         public void Create(T entity)
         {
-            //entity.Data = DateTime.Now;
             _dbSet.Add(entity);
             _context.SaveChanges();
         }
@@ -40,7 +39,8 @@ namespace SistemaDeReservas.Infrastructure.Persistence.Repositories
 
         public T GetById(int id)
         {
-            return _dbSet.SingleOrDefault(x => x.Id == id);
+            return _dbSet.SingleOrDefault(x => x.Id == id)
+                ?? throw new Exception("Esse usuário não existe");
         }
 
         public void Update(T entity)

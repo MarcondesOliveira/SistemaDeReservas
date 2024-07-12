@@ -13,5 +13,6 @@ namespace SistemaDeReservas.Application.DTOs
         public DateTime Data { get; set; }
         public TimeSpan Hora { get; set; }
         public Status Status { get; set; }
+        public int UsuarioId { get; set; }
     }
 }

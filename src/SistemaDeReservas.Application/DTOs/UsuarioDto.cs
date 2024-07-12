@@ -12,7 +12,7 @@ namespace SistemaDeReservas.Application.DTOs
         public int Id { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
+        public string Senha { get; set; }
         public TipoPermissao Permissao { get; set; }
-        public ICollection<ReservaDto> Reservas { get; set; }
     }
 }

@@ -1,50 +1,95 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SistemaDeReservas.API.Helpers;
 using SistemaDeReservas.Application.DTOs;
 using SistemaDeReservas.Application.Services;
 using SistemaDeReservas.Domain.Entities;
 using SistemaDeReservas.Domain.Enum;
 using SistemaDeReservas.Domain.Inputs;
 using SistemaDeReservas.Domain.Repositories;
+using SistemaDeReservas.Infrastructure.Persistence.Repositories;
+using System.Security.Claims;
 
 namespace SistemaDeReservas.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("/[controller]")]
     public class UsuarioController : ControllerBase
     {
-        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IUsuarioRepository _repository;
 
         public UsuarioController(IUsuarioRepository usuarioRepository)
         {
-            _usuarioRepository = usuarioRepository;
+            _repository = usuarioRepository;
         }
 
-        [Authorize]
-        [Authorize(Roles = Permissoes.Administrador)]
         [HttpGet("obter-usuarios")]
         public async Task<ActionResult<IEnumerable<Usuario>>> ObterUsuarios()
         {
             try
             {
-                var usuario = await _usuarioRepository.GetAll();
-                return Ok(usuario);
+                var userId = User.FindFirst("Id")?.Value;
+                var userPermissao = User.FindFirst(ClaimTypes.Role)?.Value;
+
+                if (userId == null || userPermissao == null)
+                {
+                    return Unauthorized();
+                }
+
+                IEnumerable<Usuario> usuarios;
+
+                var isAdmin = userPermissao == Permissoes.Administrador;
+
+                if (isAdmin)
+                {
+                    usuarios = await _repository.GetAllUsuarios();
+                }
+                else
+                {
+                    usuarios = await _repository.GetByUserId(int.Parse(userId));
+                }
+
+                var usuarioDto = usuarios.Select(r => r.ToDto()).ToList();
+
+                return Ok(usuarioDto);
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                return StatusCode(500, "Erro ao obter usuários");
             }
         }
-        [Authorize]
-        [Authorize(Roles = Permissoes.Administrador)]
+
         [HttpGet("obter-usuario-por-id")]
         public IActionResult ObterUsuarioPorId(int id)
         {
             try
             {
-                var usuario = _usuarioRepository.GetById(id);
-                return Ok(usuario);
+                var userId = User.FindFirst("Id")?.Value;
+                var userPermissao = User.FindFirst(ClaimTypes.Role)?.Value;
+
+                if (userId == null || userPermissao == null)
+                {
+                    return Unauthorized();
+                }
+
+                var usuario = _repository.GetById(id);
+                if (usuario == null)
+                {
+                    return NotFound("Usuário não encontrado");
+                }
+
+                var isAdmin = userPermissao == Permissoes.Administrador;
+                var isOwnUser = usuario.Id.ToString() == userId;
+
+                if (!isAdmin && !isOwnUser)
+                {
+                    return Unauthorized();
+                }
+
+                var usuarioDto = usuario.ToDto();
+
+                return Ok(usuarioDto);
             }
             catch (Exception ex)
             {
@@ -57,7 +102,7 @@ namespace SistemaDeReservas.API.Controllers
         {
             try
             {
-                _usuarioRepository.Create(usuario);
+                _repository.Create(usuario);
 
                 return Ok();
             }
@@ -72,7 +117,24 @@ namespace SistemaDeReservas.API.Controllers
         {
             try
             {
-                _usuarioRepository.Update(usuario);
+                var userId = User.FindFirst("Id")?.Value;
+                var userPermissao = User.FindFirst(ClaimTypes.Role)?.Value;
+
+                if (userId == null || userPermissao == null)
+                {
+                    return Unauthorized();
+                }
+
+                var isAdmin = userPermissao == Permissoes.Administrador;
+                var isOwnUser = usuario.Id.ToString() == userId;
+
+
+                if (!isAdmin && !isOwnUser)
+                {
+                    return Unauthorized();
+                }
+
+                _repository.Update(usuario);
                 return Ok("Usuario alterado com sucesso");
             }
             catch (Exception ex)
@@ -88,7 +150,7 @@ namespace SistemaDeReservas.API.Controllers
         {
             try
             {
-                _usuarioRepository.Delete(id);
+                _repository.Delete(id);
                 return Ok($"Usuário deletado com sucesso | Id: {id}");
             }
             catch (Exception ex)

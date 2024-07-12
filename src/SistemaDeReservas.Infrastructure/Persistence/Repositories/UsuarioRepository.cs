@@ -48,5 +48,15 @@ namespace SistemaDeReservas.Infrastructure.Persistence.Repositories
             _dbSet.Update(new Usuario(usuario));
             _context.SaveChanges();
         }
+
+        public async Task<IEnumerable<Usuario>> GetAllUsuarios()
+        {
+            return await _context.Usuario.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Usuario>> GetByUserId(int userId)
+        {
+            return await _context.Usuario.Where(r => r.Id == userId).ToListAsync();
+        }
     }
 }
