@@ -52,6 +52,8 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IReservaRepository, ReservaRepository>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+
 
 builder.Services.AddScoped<UsuarioService>();
 builder.Services.AddScoped<ReservaService>();
@@ -84,6 +86,15 @@ builder.Services.AddAuthentication(x =>
         RoleClaimType = ClaimTypes.Role
     };
 });
+
+// Configurar logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole(options =>
+{
+    options.IncludeScopes = true;
+    options.TimestampFormat = "[HH:mm:ss] ";
+});
+builder.Logging.SetMinimumLevel(LogLevel.Information);
 
 var app = builder.Build();
 

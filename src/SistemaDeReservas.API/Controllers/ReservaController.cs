@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SistemaDeReservas.Application.Helpers;
 using SistemaDeReservas.Domain.Entities;
 using SistemaDeReservas.Domain.Enum;
+using SistemaDeReservas.Domain.Events;
 using SistemaDeReservas.Domain.Inputs;
 using SistemaDeReservas.Domain.Repositories;
 using SistemaDeReservas.Infrastructure.Persistence.Repositories;
@@ -16,10 +17,12 @@ namespace SistemaDeReservas.API.Controllers
     public class ReservaController : ControllerBase
     {
         private readonly IReservaRepository _repository;
+        private readonly INotificationService _notificationService;
 
-        public ReservaController(IReservaRepository repository)
+        public ReservaController(IReservaRepository repository, INotificationService notificationService)
         {
             _repository = repository;
+            _notificationService = notificationService;
         }
 
         [HttpGet("obter-reservas")]
@@ -117,6 +120,7 @@ namespace SistemaDeReservas.API.Controllers
                 }
 
                 _repository.Create(reserva);
+                _notificationService.Handle(new ReservaCriadaEvent(reserva.Id, reserva.UsuarioId));
 
                 return Ok();
             }
@@ -148,6 +152,8 @@ namespace SistemaDeReservas.API.Controllers
                 }
 
                 _repository.Update(reserva);
+                _notificationService.Handle(new ReservaAtualizadaEvent(reserva.Id, reserva.UsuarioId));
+
                 return Ok("Reserva alterada com sucesso");
             }
             catch (Exception ex)
@@ -186,6 +192,8 @@ namespace SistemaDeReservas.API.Controllers
                 }
 
                 _repository.Delete(id);
+                _notificationService.Handle(new ReservaCanceladaEvent(reserva.Id, reserva.UsuarioId));
+
                 return Ok($"Reserva cancelada com sucesso | Id: {id}");
             }
             catch (Exception ex)
