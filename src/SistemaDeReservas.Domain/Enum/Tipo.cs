@@ -8,7 +8,7 @@ namespace SistemaDeReservas.Domain.Enum
 {
     public enum Tipo
     {
-        Email,
+        Email = 1,
         SMS,
         Push
     }
