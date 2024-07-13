@@ -5,9 +5,14 @@ namespace SistemaDeReservas.Domain.Repositories
 {
     public interface INotificationService
     {
-        void EnviarNotificacao(string mensagem, int usuarioId, Tipo tipo);
-        void Handle(ReservaCriadaEvent evento);
-        void Handle(ReservaAtualizadaEvent evento);
-        void Handle(ReservaCanceladaEvent evento);
+        //void EnviarNotificacao(string mensagem, int usuarioId, Tipo tipo);
+        //void Handle(ReservaCriadaEvent evento);
+        //void Handle(ReservaAtualizadaEvent evento);
+        //void Handle(ReservaCanceladaEvent evento);
+        Task HandleAsync(ReservaCriadaEvent evento);
+
+        Task HandleAsync(ReservaAtualizadaEvent evento);
+
+        Task HandleAsync(ReservaCanceladaEvent evento);
     }
 }

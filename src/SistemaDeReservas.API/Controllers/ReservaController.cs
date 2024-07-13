@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SistemaDeReservas.Application.Helpers;
+using SistemaDeReservas.Application.Services;
 using SistemaDeReservas.Domain.Entities;
 using SistemaDeReservas.Domain.Enum;
 using SistemaDeReservas.Domain.Events;
@@ -18,11 +19,13 @@ namespace SistemaDeReservas.API.Controllers
     {
         private readonly IReservaRepository _repository;
         private readonly INotificationService _notificationService;
+        private readonly ILogger<EmailService> _logger;
 
-        public ReservaController(IReservaRepository repository, INotificationService notificationService)
+        public ReservaController(IReservaRepository repository, INotificationService notificationService, ILogger<EmailService> logger)
         {
             _repository = repository;
             _notificationService = notificationService;
+            _logger = logger;
         }
 
         [HttpGet("obter-reservas")]
@@ -120,7 +123,10 @@ namespace SistemaDeReservas.API.Controllers
                 }
 
                 _repository.Create(reserva);
-                _notificationService.Handle(new ReservaCriadaEvent(reserva.Id, reserva.UsuarioId));
+                _notificationService.HandleAsync(new ReservaCriadaEvent(reserva.Id, reserva.UsuarioId));
+                
+                _logger.LogInformation("Reserva criada e email enviado.");
+
 
                 return Ok();
             }
@@ -152,7 +158,9 @@ namespace SistemaDeReservas.API.Controllers
                 }
 
                 _repository.Update(reserva);
-                _notificationService.Handle(new ReservaAtualizadaEvent(reserva.Id, reserva.UsuarioId));
+                _notificationService.HandleAsync(new ReservaAtualizadaEvent(reserva.Id, reserva.UsuarioId));
+
+                _logger.LogInformation("Reserva alterada e email enviado.");
 
                 return Ok("Reserva alterada com sucesso");
             }
@@ -192,7 +200,9 @@ namespace SistemaDeReservas.API.Controllers
                 }
 
                 _repository.Delete(id);
-                _notificationService.Handle(new ReservaCanceladaEvent(reserva.Id, reserva.UsuarioId));
+                _notificationService.HandleAsync(new ReservaCanceladaEvent(reserva.Id, reserva.UsuarioId));
+
+                _logger.LogInformation("Reserva cancelada e email enviado.");
 
                 return Ok($"Reserva cancelada com sucesso | Id: {id}");
             }
