@@ -136,7 +136,7 @@ namespace SistemaDeReservas.API.Controllers
             }
         }
 
-        [HttpPut("alterar-reserva")] // TODO: ajustar
+        [HttpPut("alterar-reserva")]
         public IActionResult AlterarReserva(UpdateReservaInput reserva)
         {
             try

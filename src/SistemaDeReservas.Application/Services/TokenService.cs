@@ -24,7 +24,7 @@ namespace SistemaDeReservas.Application.Services
         public string GerarToken(Usuario usuario)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("Secret").Value);
+            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("Secret").Value ?? throw new Exception("Key não encontrada"));
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(new Claim[]

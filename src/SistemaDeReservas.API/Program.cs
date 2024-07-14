@@ -68,7 +68,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseLazyLoadingProxies();
 }, ServiceLifetime.Scoped);
 
-var key = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("Secret"));
+var key = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("Secret") ?? throw new Exception("Key não encontrada"));
 
 builder.Services.AddAuthentication(x =>
 {

@@ -97,6 +97,7 @@ namespace SistemaDeReservas.API.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost("criar-usuario")]
         public IActionResult CriarUsuario([FromBody] CreateUsuarioInput usuario) 
         {
@@ -104,7 +105,7 @@ namespace SistemaDeReservas.API.Controllers
             {
                 _repository.Create(usuario);
 
-                return Ok();
+                return Ok("Usuario criado com sucesso");
             }
             catch (Exception e)
             {
@@ -135,6 +136,7 @@ namespace SistemaDeReservas.API.Controllers
                 }
 
                 _repository.Update(usuario);
+
                 return Ok("Usuario alterado com sucesso");
             }
             catch (Exception ex)
@@ -151,6 +153,7 @@ namespace SistemaDeReservas.API.Controllers
             try
             {
                 _repository.Delete(id);
+
                 return Ok($"Usuário deletado com sucesso | Id: {id}");
             }
             catch (Exception ex)

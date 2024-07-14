@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using SistemaDeReservas.Infrastructure.Persistence.Repositories;
+using System.IO;
 
 namespace SistemaDeReservas.Infrastructure
 {
@@ -9,9 +10,12 @@ namespace SistemaDeReservas.Infrastructure
     {
         public ApplicationDbContext CreateDbContext(string[] args)
         {
+            var basePath = AppDomain.CurrentDomain.BaseDirectory;
+            var configurationPath = Path.Combine(basePath, "..", "..", "..", "..", "SistemaDeReservas.API", "appsettings.json");
+
             IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(Path.Combine("..", "C:\\Workspace\\FIAP\\04 - Tech Challenge\\04 - Tech Challenge\\src\\SistemaDeReservas.API", "appsettings.json"))
+                .SetBasePath(basePath)
+                .AddJsonFile(configurationPath)
                 .Build();
 
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();

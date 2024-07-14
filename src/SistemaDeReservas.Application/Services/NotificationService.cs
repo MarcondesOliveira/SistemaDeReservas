@@ -31,10 +31,9 @@ namespace SistemaDeReservas.Application.Services
                 {
                     Mensagem = mensagem,
                     Tipo = tipo,
-                    Destinatario = usuario.Email // Ajuste conforme necessário
+                    Destinatario = usuario.Email 
                 };
 
-                // Aqui você pode implementar a lógica para enviar a notificação
                 switch (tipo)
                 {
                     case Tipo.Email:
@@ -77,11 +76,6 @@ namespace SistemaDeReservas.Application.Services
         private void EnviarPush(Notificacao notificacao)
         {
             _logger.LogInformation("Enviando Push notification para {Destinatario}: {Mensagem}", notificacao.Destinatario, notificacao.Mensagem);
-        }
-
-        //public void EnviarNotificacao(string mensagem, int usuarioId, Tipo tipo)
-        //{
-        //    throw new NotImplementedException();
-        //}        
+        }    
     }
 }
