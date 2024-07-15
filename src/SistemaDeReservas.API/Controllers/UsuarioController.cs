@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SistemaDeReservas.API.Helpers;
-using SistemaDeReservas.Application.DTOs;
-using SistemaDeReservas.Application.Services;
 using SistemaDeReservas.Domain.Entities;
 using SistemaDeReservas.Domain.Enum;
 using SistemaDeReservas.Domain.Inputs;
 using SistemaDeReservas.Domain.Repositories;
-using SistemaDeReservas.Infrastructure.Persistence.Repositories;
 using System.Security.Claims;
 
 namespace SistemaDeReservas.API.Controllers
@@ -99,7 +96,7 @@ namespace SistemaDeReservas.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("criar-usuario")]
-        public IActionResult CriarUsuario([FromBody] CreateUsuarioInput usuario) 
+        public IActionResult CriarUsuario([FromBody] CreateUsuarioInput usuario)
         {
             try
             {
@@ -112,7 +109,7 @@ namespace SistemaDeReservas.API.Controllers
                 return BadRequest(e);
             }
         }
-                
+
         [HttpPut("alterar-usuario")]
         public IActionResult AlterarUsuario(UpdateUsuarioInput usuario)
         {
