@@ -1,11 +1,6 @@
 ﻿using SistemaDeReservas.Domain.Entities;
 using SistemaDeReservas.Domain.Inputs;
 using SistemaDeReservas.Domain.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SistemaDeReservas.Application.Services
 {
@@ -30,6 +25,21 @@ namespace SistemaDeReservas.Application.Services
             var reserva = new Reserva(input);
 
             _repository.Update(reserva);
+        }
+
+        public Task<IEnumerable<Reserva>> GetAllReservas()
+        {
+            return _repository.GetAllReservas();
+        }
+
+        public Task<IEnumerable<Reserva>> GetByUserId(int userId)
+        {
+            return _repository.GetByUserId(userId);
+        }
+
+        public void Delete(int id)
+        {
+            _repository.Delete(id);
         }
     }
 }
