@@ -1,5 +1,4 @@
-﻿using SistemaDeReservas.Domain.Enum;
-using SistemaDeReservas.Domain.Events;
+﻿using SistemaDeReservas.Domain.Events;
 
 namespace SistemaDeReservas.Domain.Repositories
 {

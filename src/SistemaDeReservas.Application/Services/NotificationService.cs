@@ -31,7 +31,7 @@ namespace SistemaDeReservas.Application.Services
                 {
                     Mensagem = mensagem,
                     Tipo = tipo,
-                    Destinatario = usuario.Email 
+                    Destinatario = usuario.Email
                 };
 
                 switch (tipo)
@@ -76,6 +76,6 @@ namespace SistemaDeReservas.Application.Services
         private void EnviarPush(Notificacao notificacao)
         {
             _logger.LogInformation("Enviando Push notification para {Destinatario}: {Mensagem}", notificacao.Destinatario, notificacao.Mensagem);
-        }    
+        }
     }
 }

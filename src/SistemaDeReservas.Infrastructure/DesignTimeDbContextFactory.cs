@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using SistemaDeReservas.Infrastructure.Persistence.Repositories;
-using System.IO;
 
 namespace SistemaDeReservas.Infrastructure
 {

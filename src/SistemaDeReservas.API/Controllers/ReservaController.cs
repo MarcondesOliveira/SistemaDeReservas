@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SistemaDeReservas.Application.DTOs;
 using SistemaDeReservas.Application.Helpers;
 using SistemaDeReservas.Application.Services;
 using SistemaDeReservas.Domain.Entities;
@@ -102,7 +103,7 @@ namespace SistemaDeReservas.API.Controllers
         }        
 
         [HttpPost("criar-reserva")]
-        public IActionResult CriarReserva([FromBody] CreateReservaInput reserva)
+        public IActionResult CriarReserva([FromBody] CreateReservaInput reservaInput)
         {
             try
             {
@@ -115,12 +116,20 @@ namespace SistemaDeReservas.API.Controllers
                 }
 
                 var isAdmin = userPermissao == Permissoes.Administrador;
-                var isOwnUser = reserva.UsuarioId.ToString() == userId;
+                var isOwnUser = reservaInput.UsuarioId.ToString() == userId;
 
                 if (!isAdmin && !isOwnUser)
                 {
                     return Unauthorized();
                 }
+
+                var reserva = new Reserva
+                {
+                    Data = reservaInput.Data,
+                    Hora = TimeSpan.Parse(reservaInput.Hora),
+                    Status = reservaInput.Status,
+                    UsuarioId = reservaInput.UsuarioId
+                };
 
                 _repository.Create(reserva);
                 _notificationService.HandleAsync(new ReservaCriadaEvent(reserva.Id, reserva.UsuarioId));
@@ -128,7 +137,7 @@ namespace SistemaDeReservas.API.Controllers
                 _logger.LogInformation("Reserva criada e email enviado.");
 
 
-                return Ok();
+                return Ok("Reserva criada com sucesso");
             }
             catch (Exception e)
             {
@@ -137,7 +146,7 @@ namespace SistemaDeReservas.API.Controllers
         }
 
         [HttpPut("alterar-reserva")]
-        public IActionResult AlterarReserva(UpdateReservaInput reserva)
+        public IActionResult AlterarReserva(UpdateReservaInput reservaInput) // TODO: permitir editar somente reservas próprias
         {
             try
             {
@@ -149,13 +158,23 @@ namespace SistemaDeReservas.API.Controllers
                     return Unauthorized();
                 }
 
+                var reserva = _repository.GetById(reservaInput.Id);
+                if (reserva == null)
+                {
+                    return NotFound("Reserva não encontrada");
+                }
+
                 var isAdmin = userPermissao == Permissoes.Administrador;
-                var isOwnUser = reserva.UsuarioId.ToString() == userId;
+                var isOwnUser = reservaInput.UsuarioId.ToString() == userId;
 
                 if (!isAdmin && !isOwnUser)
                 {
                     return Unauthorized();
                 }
+
+                reserva.Data = reservaInput.Data;
+                reserva.Hora = TimeSpan.Parse(reservaInput.Hora);
+                reserva.Status = reservaInput.Status;
 
                 _repository.Update(reserva);
                 _notificationService.HandleAsync(new ReservaAtualizadaEvent(reserva.Id, reserva.UsuarioId));

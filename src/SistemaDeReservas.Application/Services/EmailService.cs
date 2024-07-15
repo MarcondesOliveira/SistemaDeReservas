@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MimeKit;
 using SistemaDeReservas.Domain.Repositories;
-using System.Threading.Tasks;
 
 namespace SistemaDeReservas.Application.Services
 {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SistemaDeReservas.Domain.Repositories
+﻿namespace SistemaDeReservas.Domain.Repositories
 {
     public interface IEmailService
     {

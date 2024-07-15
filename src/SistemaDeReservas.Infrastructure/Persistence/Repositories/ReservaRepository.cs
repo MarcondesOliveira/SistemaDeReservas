@@ -2,12 +2,6 @@
 using SistemaDeReservas.Domain.Entities;
 using SistemaDeReservas.Domain.Inputs;
 using SistemaDeReservas.Domain.Repositories;
-using SistemaDeReservas.Infrastructure.Persistence.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SistemaDeReservas.Infrastructure.Persistence.Repositories
 {
@@ -37,6 +31,6 @@ namespace SistemaDeReservas.Infrastructure.Persistence.Repositories
         {
             _dbSet.Update(new Reserva(reserva));
             _context.SaveChanges();
-        }        
+        }
     }
 }

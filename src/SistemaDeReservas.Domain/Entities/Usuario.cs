@@ -15,7 +15,7 @@ namespace SistemaDeReservas.Domain.Entities
         {
         }
 
-        public Usuario(CreateUsuarioInput input) 
+        public Usuario(CreateUsuarioInput input)
         {
             Nome = input.Nome;
             Email = input.Email;
