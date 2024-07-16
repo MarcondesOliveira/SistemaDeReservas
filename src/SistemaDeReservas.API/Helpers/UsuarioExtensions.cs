@@ -9,6 +9,7 @@ namespace SistemaDeReservas.API.Helpers
         {
             return new UsuarioDto
             {
+                Id = usuario.Id,
                 Nome = usuario.Nome,
                 Email = usuario.Email,
                 Senha = usuario.Senha,

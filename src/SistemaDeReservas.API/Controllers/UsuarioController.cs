@@ -149,8 +149,21 @@ namespace SistemaDeReservas.API.Controllers
         {
             try
             {
-                _repository.Delete(id);
+                var userId = User.FindFirst("Id")?.Value;
+                var userPermissao = User.FindFirst(ClaimTypes.Role)?.Value;
 
+                if (userId == null || userPermissao == null || userPermissao != Permissoes.Administrador)
+                {
+                    return Unauthorized();
+                }
+
+                var usuario = _repository.GetById(id);
+                if (usuario == null)
+                {
+                    return NotFound("Usuário não encontrado");
+                }
+
+                _repository.Delete(id);
                 return Ok($"Usuário deletado com sucesso | Id: {id}");
             }
             catch (Exception ex)

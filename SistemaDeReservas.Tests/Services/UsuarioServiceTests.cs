@@ -1,9 +1,9 @@
 ﻿using Moq;
 using SistemaDeReservas.Application.Services;
 using SistemaDeReservas.Domain.Entities;
+using SistemaDeReservas.Domain.Enum;
 using SistemaDeReservas.Domain.Inputs;
 using SistemaDeReservas.Domain.Repositories;
-using SistemaDeReservas.Domain.Enum;
 
 namespace SistemaDeReservas.Tests.Services
 {
@@ -19,7 +19,7 @@ namespace SistemaDeReservas.Tests.Services
         }
 
         [Fact]
-        public async Task GetAll_DeveRetornarTodosOsUsuarios()
+        public async Task GetAll_ShouldReturnAllUsers()
         {
             // Arrange
             var usuarios = new List<Usuario>
@@ -38,7 +38,7 @@ namespace SistemaDeReservas.Tests.Services
         }
 
         [Fact]
-        public void Create_DeveAdicionarUsuarioNoRepositorio()
+        public void Create_ShouldAddUserToRepository()
         {
             // Arrange
             var input = new CreateUsuarioInput
@@ -57,7 +57,7 @@ namespace SistemaDeReservas.Tests.Services
         }
 
         [Fact]
-        public void ObterPorId_DeveRetornarUsuarioPorId()
+        public void ObterPorId_ShouldReturnUserById()
         {
             // Arrange
             var usuarioId = 1;
@@ -73,7 +73,7 @@ namespace SistemaDeReservas.Tests.Services
         }
 
         [Fact]
-        public void Update_DeveAtualizarUsuarioNoRepositorio()
+        public void Update_ShouldUpdateUserInRepository()
         {
             // Arrange
             var input = new UpdateUsuarioInput
@@ -93,7 +93,7 @@ namespace SistemaDeReservas.Tests.Services
         }
 
         [Fact]
-        public void Delete_DeveRemoverUsuarioNoRepositorio()
+        public void Delete_ShouldRemoveUserFromRepository()
         {
             // Arrange
             int usuarioId = 1;

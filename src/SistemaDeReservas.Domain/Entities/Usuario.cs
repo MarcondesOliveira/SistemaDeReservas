@@ -13,6 +13,7 @@ namespace SistemaDeReservas.Domain.Entities
 
         public Usuario()
         {
+            
         }
 
         public Usuario(CreateUsuarioInput input)

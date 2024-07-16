@@ -1,17 +1,9 @@
 ﻿using Moq;
 using SistemaDeReservas.Application.Services;
 using SistemaDeReservas.Domain.Entities;
-using SistemaDeReservas.Domain.Repositories;
-using SistemaDeReservas.Domain.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SistemaDeReservas.Domain.Enum;
 using SistemaDeReservas.Domain.Inputs;
-using System.Security.Claims;
-using System.Collections;
+using SistemaDeReservas.Domain.Repositories;
 
 namespace SistemaDeReservas.Tests.Services
 {
@@ -27,7 +19,7 @@ namespace SistemaDeReservas.Tests.Services
         }
 
         [Fact]
-        public void Create_DeveAdicionarReservaNoRepositorio()
+        public void Create_ShouldAddReservationToRepository()
         {
             // Arrange
             var input = new CreateReservaInput
@@ -46,12 +38,12 @@ namespace SistemaDeReservas.Tests.Services
         }
 
         [Fact]
-        public void Update_DeveAtualizarReservaNoRepositorio()
+        public void Update_ShouldUpdateReservationInRepository()
         {
             // Arrange
             var input = new UpdateReservaInput
             {
-                Id = 1,                
+                Id = 1,
                 Data = DateTime.Now.AddDays(6),
                 Hora = "19:00",
                 Status = Status.Pendente,
@@ -66,7 +58,7 @@ namespace SistemaDeReservas.Tests.Services
         }
 
         [Fact]
-        public async Task GetAllReservas_DeveRetornarTodasAsReservas()
+        public async Task GetAllReservas_ShouldReturnAllReservations()
         {
             // Arrange
             var reservas = new List<Reserva>
@@ -85,7 +77,7 @@ namespace SistemaDeReservas.Tests.Services
         }
 
         [Fact]
-        public async Task GetByUserId_DeveRetornarReservasDoUsuario()
+        public async Task GetByUserId_ShouldReturnUserReservations()
         {
             // Arrange
             int userId = 1;
@@ -105,7 +97,7 @@ namespace SistemaDeReservas.Tests.Services
         }
 
         [Fact]
-        public void Delete_DeveRemoverReservaNoRepositorio()
+        public void Delete_ShouldRemoveReservationFromRepository()
         {
             // Arrange
             int reservaId = 1;

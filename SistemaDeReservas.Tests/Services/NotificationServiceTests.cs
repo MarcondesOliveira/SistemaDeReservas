@@ -5,11 +5,6 @@ using SistemaDeReservas.Domain.Entities;
 using SistemaDeReservas.Domain.Enum;
 using SistemaDeReservas.Domain.Events;
 using SistemaDeReservas.Domain.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SistemaDeReservas.Tests.Services
 {
@@ -29,7 +24,7 @@ namespace SistemaDeReservas.Tests.Services
         }
 
         [Fact]
-        public async Task EnviarNotificacaoAsync_DeveEnviarEmailQuandoTipoForEmail()
+        public async Task EnviarNotificacaoAsync_ShouldSendEmailWhenTypeIsEmail()
         {
             // Arrange
             int usuarioId = 1;
@@ -44,7 +39,7 @@ namespace SistemaDeReservas.Tests.Services
         }
 
         [Fact]
-        public async Task EnviarNotificacaoAsync_NaoDeveEnviarQuandoUsuarioNaoForEncontrado()
+        public async Task EnviarNotificacaoAsync_ShouldNotSendWhenUserNotFound()
         {
             // Arrange
             int usuarioId = 2;
@@ -66,12 +61,12 @@ namespace SistemaDeReservas.Tests.Services
         }
 
         [Fact]
-        public async Task HandleAsync_ReservaCriadaEvent_DeveEnviarNotificacaoDeReservaCriada()
+        public async Task HandleAsync_ReservaCriadaEvent_ShouldSendReservationCreatedNotification()
         {
             // Arrange
             int usuarioId = 1;
             int reservaId = 1;
-            var evento = new ReservaCriadaEvent (reservaId, usuarioId);
+            var evento = new ReservaCriadaEvent(reservaId, usuarioId);
             var usuario = new Usuario { Id = usuarioId, Email = "usuario@teste.com" };
             _usuarioRepositoryMock.Setup(r => r.GetById(usuarioId)).Returns(usuario);
 
@@ -83,7 +78,7 @@ namespace SistemaDeReservas.Tests.Services
         }
 
         [Fact]
-        public async Task HandleAsync_ReservaAtualizadaEvent_DeveEnviarNotificacaoDeReservaAtualizada()
+        public async Task HandleAsync_ReservaAtualizadaEvent_ShouldSendReservationUpdatedNotification()
         {
             // Arrange
             int usuarioId = 1;
@@ -100,7 +95,7 @@ namespace SistemaDeReservas.Tests.Services
         }
 
         [Fact]
-        public async Task HandleAsync_ReservaCanceladaEvent_DeveEnviarNotificacaoDeReservaCancelada()
+        public async Task HandleAsync_ReservaCanceladaEvent_ShouldSendReservationCancelledNotification()
         {
             // Arrange
             int usuarioId = 1;
