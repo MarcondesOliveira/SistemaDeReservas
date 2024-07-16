@@ -1,5 +1,5 @@
 
-# Tech Challlenge 4 - Sistema de Reservas
+# Tech Challenge 4 - Sistema de Reservas
 API para um sistema de reservas onde é possível criar usuário, e após logado fazer o cadastro de reservas.
 
 # Tecnologias implementadas
