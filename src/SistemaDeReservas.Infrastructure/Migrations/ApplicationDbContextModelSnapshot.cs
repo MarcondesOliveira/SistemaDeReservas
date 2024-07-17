@@ -62,6 +62,9 @@ namespace SistemaDeReservas.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("datetime");
 
+                    b.Property<TimeSpan>("Hora")
+                        .HasColumnType("time");
+
                     b.Property<int>("Status")
                         .HasMaxLength(100)
                         .HasColumnType("int");
@@ -93,6 +96,9 @@ namespace SistemaDeReservas.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Permissao")
+                        .HasColumnType("int");
 
                     b.Property<string>("Senha")
                         .IsRequired()

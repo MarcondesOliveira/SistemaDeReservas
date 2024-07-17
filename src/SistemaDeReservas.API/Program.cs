@@ -6,18 +6,15 @@ using SistemaDeReservas.Application.Services;
 using SistemaDeReservas.Domain.Repositories;
 using SistemaDeReservas.Infrastructure;
 using SistemaDeReservas.Infrastructure.Persistence.Repositories;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//var configuration = new ConfigurationBuilder()
-//    .AddJsonFile("appsettings.json")
-//    .Build();
-
 // Add services to the container.
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    options.JsonSerializerOptions.ReferenceHandler = null; // Remover ReferenceHandler
+    options.JsonSerializerOptions.ReferenceHandler = null;
 });
 
 // Add services to the container.
@@ -54,7 +51,14 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IReservaRepository, ReservaRepository>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+
+
 builder.Services.AddScoped<UsuarioService>();
+builder.Services.AddScoped<ReservaService>();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 
@@ -64,11 +68,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseLazyLoadingProxies();
 }, ServiceLifetime.Scoped);
 
-//var configuration = new ConfigurationBuilder()
-//    .AddJsonFile("appsettings.json")
-//    .Build();
-
-var key = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("Secret"));
+var key = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("Secret") ?? throw new Exception("Key não encontrada"));
 
 builder.Services.AddAuthentication(x =>
 {
@@ -84,9 +84,19 @@ builder.Services.AddAuthentication(x =>
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(key),
         ValidateIssuer = false,
-        ValidateAudience = false
+        ValidateAudience = false,
+        RoleClaimType = ClaimTypes.Role
     };
 });
+
+// Configurar logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole(options =>
+{
+    options.IncludeScopes = true;
+    options.TimestampFormat = "[HH:mm:ss] ";
+});
+builder.Logging.SetMinimumLevel(LogLevel.Information);
 
 var app = builder.Build();
 

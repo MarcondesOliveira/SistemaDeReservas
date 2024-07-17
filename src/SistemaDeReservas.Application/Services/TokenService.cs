@@ -2,13 +2,9 @@
 using Microsoft.IdentityModel.Tokens;
 using SistemaDeReservas.Domain.Entities;
 using SistemaDeReservas.Domain.Repositories;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SistemaDeReservas.Application.Services
 {
@@ -24,13 +20,14 @@ namespace SistemaDeReservas.Application.Services
         public string GerarToken(Usuario usuario)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("Secret").Value);
+            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("Secret").Value ?? throw new Exception("Key não encontrada"));
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, usuario.Nome),
                     new Claim(ClaimTypes.Email, usuario.Email),
+                    new Claim(ClaimTypes.Role, usuario.Permissao.ToString()),
                     new Claim("Id", usuario.Id.ToString())
                 }),
 

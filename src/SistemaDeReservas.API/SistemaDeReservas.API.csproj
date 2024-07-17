@@ -19,8 +19,6 @@
   <ItemGroup>
     <ProjectReference Include="..\SistemaDeReservas.Application\SistemaDeReservas.Application.csproj" />
     <ProjectReference Include="..\SistemaDeReservas.Infrastructure\SistemaDeReservas.Infrastructure.csproj" />
-    <ProjectReference Include="..\SistemaDeReservas.Adapters\SistemaDeReservas.Adapters.csproj" />
-    <ProjectReference Include="..\SistemaDeReservas.Utils\SistemaDeReservas.Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>

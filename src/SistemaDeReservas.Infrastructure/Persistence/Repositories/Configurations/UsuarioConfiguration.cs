@@ -17,6 +17,7 @@ namespace SistemaDeReservas.Infrastructure.Persistence.Repositories.Configuratio
             builder.Property(e => e.Nome).IsRequired().HasMaxLength(100);
             builder.Property(e => e.Email).IsRequired().HasMaxLength(100);
             builder.Property(e => e.Senha).IsRequired().HasMaxLength(300);
+            builder.Property(u => u.Permissao).HasConversion<int>().IsRequired();
         }
     }
 }

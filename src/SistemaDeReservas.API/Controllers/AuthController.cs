@@ -33,7 +33,6 @@ namespace SistemaDeReservas.API.Controllers
 
             return Ok(new
             {
-                Usuario = usuario,
                 Token = token
             });
         }

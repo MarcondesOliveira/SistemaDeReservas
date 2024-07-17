@@ -34,7 +34,8 @@ namespace SistemaDeReservas.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Senha = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false)
+                    Senha = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    Permissao = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,6 +49,7 @@ namespace SistemaDeReservas.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Data = table.Column<DateTime>(type: "datetime", maxLength: 100, nullable: false),
+                    Hora = table.Column<TimeSpan>(type: "time", nullable: false),
                     Status = table.Column<int>(type: "int", maxLength: 100, nullable: false),
                     UsuarioId = table.Column<int>(type: "int", nullable: false)
                 },
