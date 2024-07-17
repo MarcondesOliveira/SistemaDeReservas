@@ -48,5 +48,5 @@ Nesse caso configurei como sender o gmail e o mesmo pede "senha de app" para pod
 
 Seguindo esses passos o sistema estará pronto para execução.
 
-Link para o video no Youtube: https://youtu.be/HaoVedJkI_s
+Link para o video no Youtube: https://youtu.be/nnYgERrB-z8
 
